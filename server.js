@@ -1,7 +1,6 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const mongoose = require("mongoose");
 const User = require("./models/User");
 const connectToDatabase = require("./config/mongoDBConnexion");
 
@@ -18,7 +17,7 @@ app.use(cors());
 
 
 // Récupération de tous les utilisateurs
-router.get("/users", async (req, res) => {
+router.get("/", async (req, res) => {
     try {
       const users = await User.find();
       res.status(200).json(users);
@@ -28,7 +27,7 @@ router.get("/users", async (req, res) => {
   });
 
 // Création d'un utilisateur
-router.post("/users", async (req, res) => {
+router.post("/", async (req, res) => {
     try {
       const newUser = new User(req.body);
       const savedUser = await newUser.save();
@@ -39,7 +38,7 @@ router.post("/users", async (req, res) => {
   });
 
   // Modification d'un utilisateur
-  router.put("users/:id", async (req, res) => {
+  router.put("/:id", async (req, res) => {
     try {
       const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
@@ -56,7 +55,7 @@ router.post("/users", async (req, res) => {
   });
 
   // Suppression d'un utilisateur
-  router.delete("users/:id", async (req, res) => {
+  router.delete("/:id", async (req, res) => {
     try {
       const deletedUser = await User.findByIdAndDelete(req.params.id);
       if (!deletedUser) {
@@ -67,7 +66,10 @@ router.post("/users", async (req, res) => {
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
-  });  
+  });
+
+//  Ajout du router à l'application
+app.use("/users", router);
 
 // Demaré le serveur
 app.listen(PORT, () => {
