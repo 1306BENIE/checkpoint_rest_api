@@ -2,7 +2,7 @@ require("dotenv").config( )
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-connectToDatabase = require("./db-connexion/mongoDBConnexion")
+const connectToDatabase = require("./config/mongoDBConnexion")
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
     res.status(200).send('Welcome BENIE');
 })
 
-
+// Demaré le serveur
 app.listen(PORT, () => {
     console.log(`Le server a demaré sur le port http://localhost:${PORT}`);
 });
